@@ -6,21 +6,32 @@ import {
   IPokemonListResponse,
 } from "../interfaces/pokemonsList.interface";
 import { IPokemonListItem } from "../interfaces/pokemonDetails.interface";
+import Pagination from "../components/Pagination";
 
 function Pokemons() {
   const [pokemons, setPokemons] = useState<Array<IPokemonListItem> | null>(
     null,
   );
   const [isPagination, setIsPagination] = useState<boolean>(true);
+  const [totalItems, settotalItems] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
   const fetchPokemon = async () => {
-    let response: Array<IPokemonListItem> = await fetchPokemons();
-    setPokemons(response);
+    let response: {
+      pokemons: Array<IPokemonListItem>;
+      totalItems: number;
+    } = await fetchPokemons(currentPage);
+    setPokemons(response.pokemons);
+    settotalItems(response.totalItems);
   };
+
   useEffect(() => {
     fetchPokemon();
-  }, []);
+  }, [currentPage]);
   return (
-    <div className={`${isPagination?'bg-[#EAF0FE]':'bg-[#E3FBED]'} h-[100%] flex flex-col gap-4 items-center justify-center`}>
+    <div
+      className={`${isPagination ? "bg-[#EAF0FE]" : "bg-[#E3FBED]"} h-[100%] flex flex-col gap-4 py-10 items-center justify-center`}
+    >
       <h1 className="text-lg font-bold">Pokedex</h1>
       <p className="text-sm text-gray-500">
         Discover and explore Pokemon with page Controls
@@ -44,6 +55,17 @@ function Pokemons() {
           return <PokemonListCard {...pokemon} />;
         })}
       </div>
+
+      {isPagination && (
+        <div className="w-full flex flex-row justify-center items-center">
+          <Pagination
+            totalItems={totalItems}
+            itemsPerPage={20}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
     </div>
   );
 }
