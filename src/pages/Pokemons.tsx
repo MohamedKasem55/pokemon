@@ -7,27 +7,21 @@ import {
 } from "../interfaces/pokemonsList.interface";
 import { IPokemonListItem } from "../interfaces/pokemonDetails.interface";
 import Pagination from "../components/Pagination";
-
+import {useQuery} from "@tanstack/react-query";
 function Pokemons() {
-  const [pokemons, setPokemons] = useState<Array<IPokemonListItem> | null>(
-    null,
-  );
+
   const [isPagination, setIsPagination] = useState<boolean>(true);
-  const [totalItems, settotalItems] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const fetchPokemon = async () => {
-    let response: {
-      pokemons: Array<IPokemonListItem>;
-      totalItems: number;
-    } = await fetchPokemons(currentPage);
-    setPokemons(response.pokemons);
-    settotalItems(response.totalItems);
-  };
-
-  useEffect(() => {
-    fetchPokemon();
-  }, [currentPage]);
+  const {data: {pokemons, totalItems},isFetching} = useQuery<{
+    pokemons: IPokemonListItem[];
+    totalItems: number;
+}>({
+    queryKey: ["pokemons", currentPage],
+    queryFn: () => fetchPokemons(currentPage),
+    initialData: { pokemons: [], totalItems: 0 },
+    
+  });  
   return (
     <div
       className={`${isPagination ? "bg-[#EAF0FE]" : "bg-[#E3FBED]"} h-[100%] flex flex-col gap-4 py-10 items-center justify-center`}
@@ -51,11 +45,15 @@ function Pokemons() {
         </button>
       </div>
       <div className="w-[80%] grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4 ">
-        {pokemons?.map((pokemon: any) => {
+        { !!pokemons.length && pokemons?.map((pokemon: any) => {
           return <PokemonListCard {...pokemon} />;
         })}
       </div>
-
+      {( isFetching) && (
+        <div className="w-full flex flex-row justify-center items-center">
+          <p className="text-sm text-gray-500">Loading...</p>
+        </div>
+      )}
       {isPagination && (
         <div className="w-full flex flex-row justify-center items-center">
           <Pagination
