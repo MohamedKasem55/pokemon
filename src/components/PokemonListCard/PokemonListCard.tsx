@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import cn from "classnames";
-import { IPokemonListItem } from "../interfaces/pokemonDetails.interface";
+import { IPokemonListItem } from "../../interfaces/pokemonDetails.interface";
 import styles from "./PokemonListCard.module.css";
 
 function PokemonListCard({ id, image, name }: IPokemonListItem) {

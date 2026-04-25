@@ -1,15 +1,16 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, QueryErrorResetBoundary } from "@tanstack/react-query";
 import cn from "classnames";
-import { fetchPokemonDetails } from "../api/api";
-import { getPokemonImageUrl } from "../api/utils";
-import { statLabels } from "../const/statLabels";
-import { typeColors } from "../const/typeColors";
-import StatBar from "../components/StatBar";
+import { fetchPokemonDetails } from "../../api/api";
+import { getPokemonImageUrl } from "../../api/utils";
+import { statLabels } from "../../const/statLabels";
+import { typeColors } from "../../const/typeColors";
+import StatBar from "../../components/StatBar/StatBar";
+import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
 import styles from "./PokemonDetails.module.css";
 
-function PokemonDetails() {
+function PokemonDetailsContent() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -95,6 +96,19 @@ function PokemonDetails() {
         </div>
       </div>
     </div>
+  );
+}
+
+function PokemonDetails() {
+  const { id } = useParams<{ id: string }>();
+  return (
+    <QueryErrorResetBoundary>
+      {({ reset }) => (
+        <ErrorBoundary key={id} onReset={reset}>
+          <PokemonDetailsContent />
+        </ErrorBoundary>
+      )}
+    </QueryErrorResetBoundary>
   );
 }
 

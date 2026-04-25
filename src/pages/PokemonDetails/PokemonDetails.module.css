@@ -76,7 +76,6 @@
   @apply flex flex-col gap-2;
 }
 
-
 .abilities {
   @apply flex flex-wrap gap-2;
 }

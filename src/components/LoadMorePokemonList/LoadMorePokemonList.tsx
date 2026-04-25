@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useTransition, useState } from "react";
 import cn from "classnames";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import PokemonListCard from "./PokemonListCard";
-import { fetchPokemons } from "../api/api";
-import { IPokemonListItem } from "../interfaces/pokemonDetails.interface";
+import PokemonListCard from "../PokemonListCard/PokemonListCard";
+import { fetchPokemons } from "../../api/api";
+import { IPokemonListItem } from "../../interfaces/pokemonDetails.interface";
 import styles from "./LoadMorePokemonList.module.css";
 
 const PAGE_SIZE = 20;

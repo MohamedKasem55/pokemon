@@ -1,10 +1,10 @@
 import React, { Suspense, useState } from "react";
 import cn from "classnames";
 import { useQueryClient, QueryErrorResetBoundary } from "@tanstack/react-query";
-import LoadMorePokemonList from "../components/LoadMorePokemonList";
-import PaginatedPokemonList from "../components/PaginatedPokemonList";
-import ErrorBoundary from "../components/ErrorBoundary";
-import SkeletonGrid from "../components/SkeletonGrid";
+import LoadMorePokemonList from "../../components/LoadMorePokemonList/LoadMorePokemonList";
+import PaginatedPokemonList from "../../components/PaginatedPokemonList/PaginatedPokemonList";
+import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
+import SkeletonGrid from "../../components/SkeletonGrid/SkeletonGrid";
 import styles from "./Pokemons.module.css";
 
 function Pokemons() {

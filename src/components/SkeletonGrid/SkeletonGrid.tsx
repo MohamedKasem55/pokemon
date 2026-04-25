@@ -1,6 +1,6 @@
 import React from "react";
 import cn from "classnames";
-import SkeletonCard from "./SkeletonCard";
+import SkeletonCard from "../SkeletonCard/SkeletonCard";
 import styles from "./SkeletonGrid.module.css";
 
 const PAGE_SIZE = 20;

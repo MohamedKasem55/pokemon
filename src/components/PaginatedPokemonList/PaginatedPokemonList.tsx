@@ -1,9 +1,9 @@
 import React, { useTransition } from "react";
 import cn from "classnames";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import PokemonListCard from "./PokemonListCard";
-import Pagination from "./Pagination";
-import { fetchPokemons } from "../api/api";
+import PokemonListCard from "../PokemonListCard/PokemonListCard";
+import Pagination from "../Pagination/Pagination";
+import { fetchPokemons } from "../../api/api";
 import styles from "./PaginatedPokemonList.module.css";
 
 const PAGE_SIZE = 20;
