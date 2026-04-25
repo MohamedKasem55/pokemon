@@ -40,8 +40,17 @@ function LoadMorePokemonList({
         ))}
       </div>
 
+      {!!VisiblePokemons.length && (
+        <p className={cn(styles.showingText)}>Showing {VisiblePokemons.length} Pokémon</p>
+      )}
+
       <div className={cn(styles.footer)}>
-        {isFetching && <div className={cn(styles.spinner)} />}
+        {isFetching && (
+          <div className={cn(styles.loadingRow)}>
+            <div className={cn(styles.spinner)} />
+            <span className={cn(styles.loadingText)}>Loading More Pokémon...</span>
+          </div>
+        )}
         {!isFetching && isError && (
           <div className={cn(styles.errorWrapper)}>
             <p className={cn(styles.errorText)}>Failed to load Pokémon. Please try again.</p>

@@ -1,0 +1,114 @@
+@reference "tailwindcss";
+
+.page {
+  @apply min-h-screen bg-[#f3eeff] p-6 md:p-10;
+}
+
+.backBtn {
+  @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors mb-6;
+}
+
+.card {
+  @apply bg-white rounded-2xl shadow-md overflow-hidden max-w-3xl mx-auto;
+}
+
+.header {
+  @apply bg-gradient-to-r from-purple-600 to-pink-500 px-8 py-6 text-center text-white;
+}
+
+.name {
+  @apply text-3xl font-bold capitalize flex items-center justify-center gap-2;
+}
+
+.pokemonId {
+  @apply text-white/70 text-base mt-1;
+}
+
+.body {
+  @apply flex flex-col md:flex-row gap-8 p-6 md:p-8;
+}
+
+.leftCol {
+  @apply flex flex-col items-center gap-4 md:w-56 shrink-0;
+}
+
+.imageCircle {
+  @apply rounded-full bg-gray-100 w-48 h-48 flex items-center justify-center;
+}
+
+.image {
+  @apply w-40 h-40 object-contain;
+}
+
+.types {
+  @apply flex gap-2 flex-wrap justify-center;
+}
+
+.typeBadge {
+  @apply px-3 py-1 rounded-full text-white text-sm font-medium capitalize;
+}
+
+.measurements {
+  @apply flex gap-6 justify-center w-full pt-2 border-t border-gray-100;
+}
+
+.measurement {
+  @apply flex flex-col items-center gap-1;
+}
+
+.measureLabel {
+  @apply text-gray-400 text-xs flex items-center gap-1;
+}
+
+.measureValue {
+  @apply font-bold text-lg text-gray-800;
+}
+
+.rightCol {
+  @apply flex-1 flex flex-col gap-5;
+}
+
+.sectionTitle {
+  @apply text-lg font-bold text-gray-800;
+}
+
+.statsSection {
+  @apply flex flex-col gap-2;
+}
+
+
+.abilities {
+  @apply flex flex-wrap gap-2;
+}
+
+.abilityBadge {
+  @apply px-3 py-1 rounded-full bg-gray-100 text-sm text-gray-700 capitalize flex items-center gap-1;
+}
+
+.hiddenLabel {
+  @apply text-gray-400 text-xs;
+}
+
+.baseExp {
+  @apply text-2xl font-bold text-purple-600;
+}
+
+.spinnerWrapper {
+  @apply min-h-screen bg-[#f3eeff] flex items-center justify-center;
+}
+
+.spinner {
+  @apply w-10 h-10 border-4 border-gray-300 border-t-purple-600 rounded-full animate-spin;
+}
+
+.errorWrapper {
+  @apply min-h-screen bg-[#f3eeff] flex flex-col items-center justify-center gap-4;
+}
+
+.errorText {
+  @apply text-red-500 font-semibold;
+}
+
+.retryBtn {
+  @apply px-4 py-2 rounded-lg border border-red-400 text-red-500 text-sm font-semibold hover:bg-red-50 transition-colors;
+}

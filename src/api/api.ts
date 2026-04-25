@@ -26,12 +26,7 @@ export const fetchPokemons = async (currentPage:number): Promise<{
 };
 export const fetchPokemonDetails = async (
   id: string,
-): Promise<IPokemonListItem> => {
+): Promise<IPokemonDetailsResponse> => {
   let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-  let data: IPokemonDetailsResponse = await response.json();
-  return {
-    id: data.id,
-    name: data.name,
-    image: data.sprites.front_default || data.sprites.front_shiny || "",
-  };
+  return response.json();
 };

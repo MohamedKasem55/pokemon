@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.row {
+  @apply flex items-center gap-3;
+}
+
+.label {
+  @apply text-sm text-gray-600 w-24 shrink-0;
+}
+
+.track {
+  @apply flex-1 bg-gray-100 rounded-full h-2;
+}
+
+.fill {
+  @apply h-2 bg-gray-800 rounded-full;
+}
+
+.value {
+  @apply text-sm text-gray-700 w-8 text-right shrink-0;
+}
