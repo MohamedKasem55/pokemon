@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
+import cn from "classnames";
 import PokemonListCard from "./PokemonListCard";
 import { IPokemonListItem } from "../interfaces/pokemonDetails.interface";
+import styles from "./LoadMorePokemonList.module.css";
 
-function InfiniteScrollPokemonList({
+function LoadMorePokemonList({
   pokemons,
   totalItems,
   isFetching,
@@ -27,31 +29,29 @@ function InfiniteScrollPokemonList({
   }, [pokemons]);
 
   return (
-    <div className="w-full flex flex-col gap-4 justify-center items-center">
-      <div className="w-[80%] grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
+    <div className={cn(styles.wrapper)}>
+      <div className={cn(styles.grid)}>
         {VisiblePokemons.map((pokemon: IPokemonListItem) => (
           <PokemonListCard key={pokemon.id} {...pokemon} />
         ))}
       </div>
 
-      <div className="flex flex-col items-center gap-2 py-4">
-        {isFetching && (
-          <div className="w-8 h-8 border-4 border-gray-300 border-t-black rounded-full animate-spin" />
-        )}
+      <div className={cn(styles.footer)}>
+        {isFetching && <div className={cn(styles.spinner)} />}
         {!isFetching && showMore && (
           <button
             onClick={() => setCurrentPage(currentPage + 1)}
-            className="px-6 py-2 rounded-lg bg-black text-white font-semibold hover:bg-gray-800 transition-colors"
+            className={cn(styles.loadMoreBtn)}
           >
             Load More
           </button>
         )}
         {!showMore && (
-          <p className="text-sm text-gray-500">All {totalItems} Pokémon loaded</p>
+          <p className={cn(styles.allLoadedText)}>All {totalItems} Pokémon loaded</p>
         )}
       </div>
     </div>
   );
 }
 
-export default InfiniteScrollPokemonList;
+export default LoadMorePokemonList;

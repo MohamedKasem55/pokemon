@@ -1,33 +1,25 @@
-import React, { useEffect, useState } from "react";
-import {
-  IPokemonListItem,
-  IPokemonDetailsResponse,
-} from "../interfaces/pokemonDetails.interface";
-import { fetchPokemonDetails } from "../api/api";
+import React, { useState } from "react";
+import cn from "classnames";
+import { IPokemonListItem } from "../interfaces/pokemonDetails.interface";
+import styles from "./PokemonListCard.module.css";
 
 function PokemonListCard({ id, image, name }: IPokemonListItem) {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
-    <div className="rounded-lg bg-white border-gray-200 border-2 p-3 flex flex-col items-center gap-2">
-      <div className="relative w-full h-32">
-
-      {!imageLoaded && (
-        <div className="absolute inset-0 bg-gray-200 animate-pulse rounded" />
-      )}
-      <img
-        src={image}
-        alt={name}
-        loading="lazy"
-        onLoad={() => setImageLoaded(true)}
-        className={`w-full h-full object-contain transition-opacity duration-300 ${
-          imageLoaded ? "opacity-100" : "opacity-0"
-        }`}
-      />
+    <div className={cn(styles.card)}>
+      <div className={cn(styles.imageWrapper)}>
+        {!imageLoaded && <div className={cn(styles.skeleton)} />}
+        <img
+          src={image}
+          alt={name}
+          loading="lazy"
+          onLoad={() => setImageLoaded(true)}
+          className={cn(styles.image, imageLoaded ? styles.imageVisible : styles.imageHidden)}
+        />
       </div>
-
-      <h3 className="text-lg font-bold">{name}</h3>
-      <p className="text-sm text-gray-500">#{id}</p>
+      <h3 className={cn(styles.name)}>{name}</h3>
+      <p className={cn(styles.pokemonId)}>#{id}</p>
     </div>
   );
 }

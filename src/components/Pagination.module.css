@@ -1,0 +1,33 @@
+@reference "tailwindcss";
+
+.container {
+  @apply flex flex-row items-center gap-1;
+}
+
+.btn {
+  @apply min-w-[2.25rem] h-9 px-2 rounded font-semibold text-sm transition-colors;
+}
+
+.btnDefault {
+  @apply bg-white text-gray-700 hover:bg-gray-100 border border-gray-300;
+}
+
+.btnActive {
+  @apply bg-black text-white border border-black;
+}
+
+.btnDisabled {
+  @apply bg-white text-gray-300 border border-gray-200 cursor-not-allowed;
+}
+
+.ellipsis {
+  @apply min-w-[2.25rem] h-9 flex items-center justify-center text-black text-sm;
+}
+
+.mobilePages {
+  @apply flex md:hidden items-center gap-1;
+}
+
+.desktopPages {
+  @apply hidden md:flex items-center gap-1;
+}

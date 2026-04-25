@@ -1,4 +1,6 @@
 import React from "react";
+import cn from "classnames";
+import styles from "./Pagination.module.css";
 
 function getPageNumbers(currentPage: number, totalPages: number, radius: number): (number | "...")[] {
   if (totalPages <= 1) return [1];
@@ -32,39 +34,37 @@ function Pagination({
   const mobilePages = getPageNumbers(currentPage, totalPages, 0);
   const desktopPages = getPageNumbers(currentPage, totalPages, 2);
 
-  const btnBase = "min-w-[2.25rem] h-9 px-2 rounded font-semibold text-sm transition-colors";
-  const btnDefault = `${btnBase} bg-white text-gray-700 hover:bg-gray-100 border border-gray-300`;
-  const btnActive = `${btnBase} bg-black text-white border border-black`;
-  const btnDisabled = `${btnBase} bg-white text-gray-300 border border-gray-200 cursor-not-allowed`;
+  const pageBtn = (page: number) =>
+    cn(styles.btn, page === currentPage ? styles.btnActive : styles.btnDefault);
 
   return (
-    <div className="flex flex-row items-center gap-1">
+    <div className={cn(styles.container)}>
       <button
-        className={`${currentPage === 1 ? btnDisabled : btnDefault} w-full!`}
+        className={cn(styles.btn, currentPage === 1 ? styles.btnDisabled : styles.btnDefault)}
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
         Prev
       </button>
 
-      <div className="flex md:hidden items-center gap-1">
+      <div className={cn(styles.mobilePages)}>
         {mobilePages.map((page, i) =>
           page === "..." ? (
-            <span key={`m-ellipsis-${i}`} className="min-w-[2.25rem] h-9 flex items-center justify-center text-black text-sm">…</span>
+            <span key={`m-ellipsis-${i}`} className={cn(styles.ellipsis)}>…</span>
           ) : (
-            <button key={page} className={page === currentPage ? btnActive : btnDefault} onClick={() => onPageChange(page)}>
+            <button key={page} className={pageBtn(page)} onClick={() => onPageChange(page)}>
               {page}
             </button>
           )
         )}
       </div>
 
-      <div className="hidden md:flex items-center gap-1">
+      <div className={cn(styles.desktopPages)}>
         {desktopPages.map((page, i) =>
           page === "..." ? (
-            <span key={`d-ellipsis-${i}`} className="min-w-[2.25rem] h-9 flex items-center justify-center text-black text-sm">…</span>
+            <span key={`d-ellipsis-${i}`} className={cn(styles.ellipsis)}>…</span>
           ) : (
-            <button key={page} className={page === currentPage ? btnActive : btnDefault} onClick={() => onPageChange(page)}>
+            <button key={page} className={pageBtn(page)} onClick={() => onPageChange(page)}>
               {page}
             </button>
           )
@@ -72,11 +72,11 @@ function Pagination({
       </div>
 
       <button
-        className={`${currentPage === totalPages ? btnDisabled : btnDefault} w-fit!`}
+        className={cn(styles.btn, currentPage === totalPages ? styles.btnDisabled : styles.btnDefault)}
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        Next 
+        Next
       </button>
     </div>
   );

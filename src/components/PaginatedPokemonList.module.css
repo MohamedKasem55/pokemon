@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+.wrapper {
+  @apply w-full flex flex-col gap-4 justify-center items-center;
+}
+
+.grid {
+  @apply w-[80%] grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4;
+}
+
+.loadingWrapper {
+  @apply w-full flex flex-row justify-center items-center;
+}
+
+.loadingText {
+  @apply text-sm text-gray-500;
+}
+
+.paginationWrapper {
+  @apply w-full flex flex-col gap-4 justify-center items-center;
+}
+
+.pageInfo {
+  @apply ml-4 text-sm text-gray-500;
+}

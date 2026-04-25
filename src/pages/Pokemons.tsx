@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import cn from "classnames";
 import { fetchPokemons } from "../api/api";
-import PokemonListCard from "../components/PokemonListCard";
-import {
-  IPokemonListItemResponse,
-  IPokemonListResponse,
-} from "../interfaces/pokemonsList.interface";
 import { IPokemonListItem } from "../interfaces/pokemonDetails.interface";
-import Pagination from "../components/Pagination";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import InfiniteScrollPokemonList from "../components/InfiniteScrollPokemonList";
+import LoadMorePokemonList from "../components/LoadMorePokemonList";
 import PaginatedPokemonList from "../components/PaginatedPokemonList";
+import styles from "./Pokemons.module.css";
+
 function Pokemons() {
   const [isPagination, setIsPagination] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -27,49 +24,48 @@ function Pokemons() {
     initialData: { pokemons: [], totalItems: 0 },
     placeholderData: (previousData) => previousData,
   });
+
   const updatePagination = (value: boolean) => {
     setCurrentPage(1);
     if (!value) queryClient.resetQueries({ queryKey: ["pokemons"] });
     setIsPagination(value);
   };
+
   return (
-    <div
-      className={`${isPagination ? "bg-[#EAF0FE]" : "bg-[#E3FBED]"} h-[100%] flex flex-col gap-4 py-10
-         items-center justify-center`}
-    >
-      <h1 className="text-lg font-bold">Pokedex</h1>
-      <p className="text-sm text-gray-500">
-        Discover and explore Pokemon with page Controls
-      </p>
-      <div className="flex flex-row gap-4 flex-wrap p-2 items-center justify-center">
+    <div className={cn(styles.wrapper, isPagination ? styles.wrapperPagination : styles.wrapperInfinite)}>
+      <h1 className={cn(styles.title)}>Pokedex</h1>
+      <p className={cn(styles.subtitle)}>Discover and explore Pokemon with page Controls</p>
+
+      <div className={cn(styles.controls)}>
         <button
           onClick={() => updatePagination(true)}
-          className={`cursor-pointer px-4 py-3 rounded-lg ${isPagination ? "text-white bg-black" : "bg-white text-black"}`}
+          className={cn(styles.btn, isPagination ? styles.btnActive : styles.btnInactive)}
         >
           Page Controls
         </button>
         <button
           onClick={() => updatePagination(false)}
-          className={`cursor-pointer px-4 py-3 rounded-lg ${isPagination ? "bg-white text-black" : "text-white bg-black"}`}
+          className={cn(styles.btn, isPagination ? styles.btnInactive : styles.btnActive)}
         >
           Infinite Scroll
         </button>
       </div>
+
       {isPagination ? (
         <PaginatedPokemonList
           pokemons={pokemons}
           totalItems={totalItems}
           isFetching={isFetching}
           currentPage={currentPage}
-          setCurrentPage={(page: number) => setCurrentPage(page)}
+          setCurrentPage={setCurrentPage}
         />
       ) : (
-        <InfiniteScrollPokemonList
+        <LoadMorePokemonList
           pokemons={pokemons}
           totalItems={totalItems}
           isFetching={isFetching}
           currentPage={currentPage}
-          setCurrentPage={(page: number) => setCurrentPage(page)}
+          setCurrentPage={setCurrentPage}
         />
       )}
     </div>
