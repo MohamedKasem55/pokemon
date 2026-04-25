@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+.card {
+  @apply rounded-lg bg-white border-gray-200 border-2 p-3 flex flex-col items-center gap-2;
+}
+
+.image {
+  @apply w-full h-32 bg-gray-200 animate-pulse rounded;
+}
+
+.name {
+  @apply w-3/4 h-4 bg-gray-200 animate-pulse rounded;
+}
+
+.id {
+  @apply w-1/3 h-3 bg-gray-200 animate-pulse rounded;
+}

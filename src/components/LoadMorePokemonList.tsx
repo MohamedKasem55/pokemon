@@ -1,8 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import cn from "classnames";
 import PokemonListCard from "./PokemonListCard";
+import SkeletonCard from "./SkeletonCard";
 import { IPokemonListItem } from "../interfaces/pokemonDetails.interface";
 import styles from "./LoadMorePokemonList.module.css";
+
+const PAGE_SIZE = 20;
 
 function LoadMorePokemonList({
   pokemons,
@@ -27,6 +30,8 @@ function LoadMorePokemonList({
     return !totalItems || VisiblePokemons.length < totalItems;
   }, [VisiblePokemons.length, totalItems]);
 
+  const isInitialLoad = isFetching && VisiblePokemons.length === 0;
+
   useEffect(() => {
     if (!pokemons.length) return;
     setVisiblePokemons((prev) => [...prev, ...pokemons]);
@@ -38,6 +43,9 @@ function LoadMorePokemonList({
         {VisiblePokemons.map((pokemon: IPokemonListItem) => (
           <PokemonListCard key={pokemon.id} {...pokemon} />
         ))}
+        {isInitialLoad &&
+          Array.from({ length: PAGE_SIZE }).map((_, i) => <SkeletonCard key={i} />)
+        }
       </div>
 
       {!!VisiblePokemons.length && (
@@ -45,7 +53,7 @@ function LoadMorePokemonList({
       )}
 
       <div className={cn(styles.footer)}>
-        {isFetching && (
+        {!isInitialLoad && isFetching && (
           <div className={cn(styles.loadingRow)}>
             <div className={cn(styles.spinner)} />
             <span className={cn(styles.loadingText)}>Loading More Pokémon...</span>

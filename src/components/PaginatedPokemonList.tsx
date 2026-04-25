@@ -1,9 +1,12 @@
 import React from "react";
 import cn from "classnames";
 import PokemonListCard from "./PokemonListCard";
+import SkeletonCard from "./SkeletonCard";
 import Pagination from "./Pagination";
 import { IPokemonListItem } from "../interfaces/pokemonDetails.interface";
 import styles from "./PaginatedPokemonList.module.css";
+
+const PAGE_SIZE = 20;
 
 function PaginatedPokemonList({
   pokemons,
@@ -25,12 +28,11 @@ function PaginatedPokemonList({
   return (
     <div className={cn(styles.wrapper)}>
       <div className={cn(styles.grid)}>
-        {pokemons.map((pokemon) => (
-          <PokemonListCard key={pokemon.id} {...pokemon} />
-        ))}
+        {isFetching
+          ? Array.from({ length: PAGE_SIZE }).map((_, i) => <SkeletonCard key={i} />)
+          : pokemons.map((pokemon) => <PokemonListCard key={pokemon.id} {...pokemon} />)
+        }
       </div>
-
-      {isFetching && <div className={cn(styles.spinner)} />}
 
       {!isFetching && isError && (
         <div className={cn(styles.errorWrapper)}>
@@ -43,12 +45,12 @@ function PaginatedPokemonList({
         <div className={cn(styles.paginationWrapper)}>
           <Pagination
             totalItems={totalItems}
-            itemsPerPage={20}
+            itemsPerPage={PAGE_SIZE}
             currentPage={currentPage}
             onPageChange={setCurrentPage}
           />
           <div className={cn(styles.pageInfo)}>
-            Page {currentPage} of {Math.ceil(totalItems / 20)} (20 items shown)
+            Page {currentPage} of {Math.ceil(totalItems / PAGE_SIZE)} ({PAGE_SIZE} items shown)
           </div>
         </div>
       )}
