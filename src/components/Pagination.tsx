@@ -47,7 +47,6 @@ function Pagination({
         Prev
       </button>
 
-      {/* Mobile: 3 buttons */}
       <div className="flex md:hidden items-center gap-1">
         {mobilePages.map((page, i) =>
           page === "..." ? (
@@ -60,7 +59,6 @@ function Pagination({
         )}
       </div>
 
-      {/* Desktop: 5 buttons */}
       <div className="hidden md:flex items-center gap-1">
         {desktopPages.map((page, i) =>
           page === "..." ? (
