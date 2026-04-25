@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PokemonListCard from "./PokemonListCard";
 import { IPokemonListItem } from "../interfaces/pokemonDetails.interface";
 
@@ -16,29 +16,10 @@ function InfiniteScrollPokemonList({
   setCurrentPage: (page: number) => void;
 }) {
   const [VisiblePokemons, setVisiblePokemons] = useState<IPokemonListItem[]>([]);
-  const loader = useRef<HTMLDivElement>(null);
 
   const showMore = useMemo(() => {
     return !totalItems || VisiblePokemons.length < totalItems;
   }, [VisiblePokemons.length, totalItems]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries: IntersectionObserverEntry[]) => {
-        if (entries[0].isIntersecting && showMore && !isFetching) {
-          setCurrentPage((prev) => prev + 1);
-          console.log(entries[0]);
-        }
-      },
-      {
-        threshold: 0.1,
-      },
-    );
-    if (loader.current) observer.observe(loader.current!);
-    return () => {
-      if (loader.current) observer.unobserve(loader.current!);
-    };
-  }, [showMore, isFetching]);
 
   useEffect(() => {
     if (!pokemons.length) return;
@@ -46,25 +27,27 @@ function InfiniteScrollPokemonList({
   }, [pokemons]);
 
   return (
-    <div className=" w-full flex flex-col gap-4 justify-center items-center">
-      <div className="w-[80%] grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4 ">
-        {!!VisiblePokemons.length &&
-          VisiblePokemons?.map((pokemon: IPokemonListItem) => {
-            return <PokemonListCard key={pokemon.id} {...pokemon} />;
-          })}
+    <div className="w-full flex flex-col gap-4 justify-center items-center">
+      <div className="w-[80%] grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
+        {VisiblePokemons.map((pokemon: IPokemonListItem) => (
+          <PokemonListCard key={pokemon.id} {...pokemon} />
+        ))}
       </div>
-      <div ref={loader}>
+
+      <div className="flex flex-col items-center gap-2 py-4">
         {isFetching && (
-          <div className="w-full flex flex-row justify-center items-center">
-            <p className="text-sm text-gray-500">Loading...</p>
-          </div>
+          <div className="w-8 h-8 border-4 border-gray-300 border-t-black rounded-full animate-spin" />
+        )}
+        {!isFetching && showMore && (
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            className="px-6 py-2 rounded-lg bg-black text-white font-semibold hover:bg-gray-800 transition-colors"
+          >
+            Load More
+          </button>
         )}
         {!showMore && (
-          <div className="w-full flex flex-row justify-center items-center">
-            <p className="text-sm text-gray-500">
-              All {totalItems} Pokémon loaded
-            </p>
-          </div>
+          <p className="text-sm text-gray-500">All {totalItems} Pokémon loaded</p>
         )}
       </div>
     </div>
