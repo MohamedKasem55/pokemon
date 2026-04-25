@@ -16,7 +16,7 @@ function LoadMorePokemonList({
   currentPage,
   setCurrentPage,
 }: {
-  pokemons: Array<any>;
+  pokemons: IPokemonListItem[];
   totalItems: number;
   isFetching: boolean;
   isError: boolean;

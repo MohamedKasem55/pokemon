@@ -44,7 +44,7 @@ function Pagination({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        Prev
+        ‹ Previous
       </button>
 
       <div className={cn(styles.mobilePages)}>
@@ -76,7 +76,7 @@ function Pagination({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        Next
+        Next ›
       </button>
     </div>
   );

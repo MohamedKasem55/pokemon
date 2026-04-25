@@ -35,7 +35,7 @@ function Pokemons() {
 
   return (
     <div className={cn(styles.wrapper, isPagination ? styles.wrapperPagination : styles.wrapperInfinite)}>
-      <h1 className={cn(styles.title)}>Pokedex</h1>
+      <h1 className={cn(styles.title)}>⚡ Pokédex</h1>
       <p className={cn(styles.subtitle)}>
         Discover and explore Pokemon with {isPagination ? "page controls" : "infinite scroll"}
       </p>
