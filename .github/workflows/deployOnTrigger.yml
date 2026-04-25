@@ -1,0 +1,76 @@
+name: Deploy to Vercel On http trigger
+on:
+  repository_dispatch:
+    types: [deploy-trigger, deploy-production, deploy-preview]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.client_payload.branch }}
+      - name: Setup NodeJs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.9.0
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Tests
+        run: npm run test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.client_payload.branch }}
+
+      - name: Setup Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.9.0
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Set Branch Slug
+        id: slug
+        run: |
+          BRANCH="${{ github.event.client_payload.branch }}"
+          SLUG=$(echo "$BRANCH" | sed 's|.*/||' | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
+          echo "slug=$SLUG" >> $GITHUB_OUTPUT
+          echo "Branch: $BRANCH"
+          echo "Slug: $SLUG"
+
+      - name: Debug
+        run: |
+          echo "Branch from payload: ${{ github.event.client_payload.branch }}"
+          echo "Slug: ${{ steps.slug.outputs.slug }}"
+          echo "Is main: ${{ github.event.client_payload.branch == 'main' }}"
+
+      - name: Deploy to Vercel (Production)
+        if: ${{ github.event.client_payload.branch == 'main' || github.event.client_payload.branch == 'master' }}
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+
+      - name: Deploy to Vercel (Preview)
+        if: ${{ github.event.client_payload.branch != 'main' && github.event.client_payload.branch != 'master' }}
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--name vehicles-app-${{ steps.slug.outputs.slug }}'
+          alias-domains: |
+            vehicles-app-${{ steps.slug.outputs.slug }}.vercel.app

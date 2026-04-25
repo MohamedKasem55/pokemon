@@ -1,8 +1,25 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import React, { Suspense } from 'react'
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
+import { QueryErrorResetBoundary } from '@tanstack/react-query'
 import Pokemons from './pages/Pokemons'
 import PokemonDetails from './pages/PokemonDetails'
 import ErrorBoundary from './components/ErrorBoundary'
+import Spinner from './components/Spinner'
+
+function PokemonDetailsWrapper() {
+  const { id } = useParams()
+  return (
+    <QueryErrorResetBoundary>
+      {({ reset }) => (
+        <ErrorBoundary key={id} onReset={reset}>
+          <Suspense fallback={<Spinner />}>
+            <PokemonDetails />
+          </Suspense>
+        </ErrorBoundary>
+      )}
+    </QueryErrorResetBoundary>
+  )
+}
 
 function App() {
   return (
@@ -10,7 +27,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Pokemons />} />
-          <Route path="/pokemon/:id" element={<PokemonDetails />} />
+          <Route path="/pokemon/:id" element={<PokemonDetailsWrapper />} />
         </Routes>
       </BrowserRouter>
     </ErrorBoundary>

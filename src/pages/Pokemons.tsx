@@ -1,31 +1,16 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import cn from "classnames";
-import { fetchPokemons } from "../api/api";
-import { IPokemonListItem } from "../interfaces/pokemonDetails.interface";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, QueryErrorResetBoundary } from "@tanstack/react-query";
 import LoadMorePokemonList from "../components/LoadMorePokemonList";
 import PaginatedPokemonList from "../components/PaginatedPokemonList";
+import ErrorBoundary from "../components/ErrorBoundary";
+import SkeletonGrid from "../components/SkeletonGrid";
 import styles from "./Pokemons.module.css";
 
 function Pokemons() {
   const [isPagination, setIsPagination] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const queryClient = useQueryClient();
-
-  const {
-    data: { pokemons, totalItems },
-    isFetching,
-    isError,
-    refetch,
-  } = useQuery<{
-    pokemons: IPokemonListItem[];
-    totalItems: number;
-  }>({
-    queryKey: ["pokemons", currentPage],
-    queryFn: () => fetchPokemons(currentPage),
-    initialData: { pokemons: [], totalItems: 0 },
-    placeholderData: (previousData) => previousData,
-  });
 
   const updatePagination = (value: boolean) => {
     setCurrentPage(1);
@@ -55,27 +40,18 @@ function Pokemons() {
         </button>
       </div>
 
-      {isPagination ? (
-        <PaginatedPokemonList
-          pokemons={pokemons}
-          totalItems={totalItems}
-          isFetching={isFetching}
-          isError={isError}
-          onRetry={refetch}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
-      ) : (
-        <LoadMorePokemonList
-          pokemons={pokemons}
-          totalItems={totalItems}
-          isFetching={isFetching}
-          isError={isError}
-          onRetry={refetch}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
-      )}
+      <QueryErrorResetBoundary>
+        {({ reset }) => (
+          <ErrorBoundary key={isPagination ? "pagination" : "infinite"} onReset={reset}>
+            <Suspense fallback={<SkeletonGrid />}>
+              {isPagination
+                ? <PaginatedPokemonList currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                : <LoadMorePokemonList currentPage={currentPage} setCurrentPage={setCurrentPage} />
+              }
+            </Suspense>
+          </ErrorBoundary>
+        )}
+      </QueryErrorResetBoundary>
     </div>
   );
 }
