@@ -15,6 +15,8 @@ function Pokemons() {
   const {
     data: { pokemons, totalItems },
     isFetching,
+    isError,
+    refetch,
   } = useQuery<{
     pokemons: IPokemonListItem[];
     totalItems: number;
@@ -56,6 +58,8 @@ function Pokemons() {
           pokemons={pokemons}
           totalItems={totalItems}
           isFetching={isFetching}
+          isError={isError}
+          onRetry={refetch}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
@@ -64,6 +68,8 @@ function Pokemons() {
           pokemons={pokemons}
           totalItems={totalItems}
           isFetching={isFetching}
+          isError={isError}
+          onRetry={refetch}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />

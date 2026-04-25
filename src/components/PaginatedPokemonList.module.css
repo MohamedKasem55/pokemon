@@ -8,12 +8,8 @@
   @apply w-[80%] grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4;
 }
 
-.loadingWrapper {
-  @apply w-full flex flex-row justify-center items-center;
-}
-
-.loadingText {
-  @apply text-sm text-gray-500;
+.spinner {
+  @apply w-8 h-8 border-4 border-gray-300 border-t-black rounded-full animate-spin;
 }
 
 .paginationWrapper {
@@ -22,4 +18,16 @@
 
 .pageInfo {
   @apply ml-4 text-sm text-gray-500;
+}
+
+.errorWrapper {
+  @apply w-full flex flex-col items-center gap-3 py-10;
+}
+
+.errorText {
+  @apply text-red-500 font-semibold text-sm;
+}
+
+.retryBtn {
+  @apply px-4 py-2 rounded-lg border border-red-400 text-red-500 text-sm font-semibold hover:bg-red-50 transition-colors;
 }

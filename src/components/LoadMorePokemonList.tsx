@@ -8,12 +8,16 @@ function LoadMorePokemonList({
   pokemons,
   totalItems,
   isFetching,
+  isError,
+  onRetry,
   currentPage,
   setCurrentPage,
 }: {
   pokemons: Array<any>;
   totalItems: number;
   isFetching: boolean;
+  isError: boolean;
+  onRetry: () => void;
   currentPage: number;
   setCurrentPage: (page: number) => void;
 }) {
@@ -38,7 +42,13 @@ function LoadMorePokemonList({
 
       <div className={cn(styles.footer)}>
         {isFetching && <div className={cn(styles.spinner)} />}
-        {!isFetching && showMore && (
+        {!isFetching && isError && (
+          <div className={cn(styles.errorWrapper)}>
+            <p className={cn(styles.errorText)}>Failed to load Pokémon. Please try again.</p>
+            <button className={cn(styles.retryBtn)} onClick={onRetry}>Retry</button>
+          </div>
+        )}
+        {!isFetching && !isError && showMore && (
           <button
             onClick={() => setCurrentPage(currentPage + 1)}
             className={cn(styles.loadMoreBtn)}
@@ -46,7 +56,7 @@ function LoadMorePokemonList({
             Load More
           </button>
         )}
-        {!showMore && (
+        {!isFetching && !isError && !showMore && (
           <p className={cn(styles.allLoadedText)}>All {totalItems} Pokémon loaded</p>
         )}
       </div>

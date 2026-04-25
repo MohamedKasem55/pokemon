@@ -23,3 +23,15 @@
 .allLoadedText {
   @apply text-sm text-gray-500;
 }
+
+.errorWrapper {
+  @apply w-full flex flex-col items-center gap-3 py-10;
+}
+
+.errorText {
+  @apply text-red-500 font-semibold text-sm;
+}
+
+.retryBtn {
+  @apply px-4 py-2 rounded-lg border border-red-400 text-red-500 text-sm font-semibold hover:bg-red-50 transition-colors;
+}
